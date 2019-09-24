@@ -82,7 +82,7 @@ plda_feat_rxspecifiers, plda_vad_rxspecifiers, plda_utt_ids, plda_spk_ids = asvt
 plda_rxspecifiers = (plda_feat_rxspecifiers, plda_vad_rxspecifiers)
 
 test_feat_rxspecifiers, test_vad_rxspecifiers, test_utt_ids, test_spk_ids = asvtorch.kaldidata.utils.choose_all(DATA_FOLDER, TEST_FOLDER)
-test_rxspecifiers = (feat_rxspecifiers, vad_rxspecifiers)
+test_rxspecifiers = (test_feat_rxspecifiers, test_vad_rxspecifiers)
 
 
 # Frame posterior extraction
