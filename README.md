@@ -11,7 +11,24 @@
 - update **DATA_FOLDER** in **run_voxceleb_ivector.py**
 
 - install and activate suitable conda environment
-  - test
+  - **environment.yml** has all the needed packages
+  - Main requirements: Python (>3.6), PyTorch(>1.0), NumPy, SciPy, PyKaldi
   
 - run **run_voxceleb_ivector.py**
+
+
+For more details:
+http://dx.doi.org/10.21437/Interspeech.2019-1955
+
+```
+@inproceedings{Vestman2019,
+  author={Ville Vestman and Kong Aik Lee and Tomi H. Kinnunen and Takafumi Koshinaka},
+  title={{Unleashing the Unused Potential of i-Vectors Enabled by GPU Acceleration}},
+  year=2019,
+  booktitle={Proc. Interspeech 2019},
+  pages={351--355},
+  doi={10.21437/Interspeech.2019-1955},
+  url={http://dx.doi.org/10.21437/Interspeech.2019-1955}
+}
+```
 
