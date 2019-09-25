@@ -12,7 +12,7 @@
 
 - install and activate suitable conda environment
   - **environment.yml** has all the needed packages
-  - Main requirements: Python (>3.6), PyTorch(>1.0), NumPy, SciPy, PyKaldi
+  - Main requirements: Python (>3.6), PyTorch(>1.1), NumPy, SciPy, PyKaldi
   
 - run **run_voxceleb_ivector.py**
 
