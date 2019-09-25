@@ -1,4 +1,5 @@
 #### GPU accelerated PyTorch implementation of frame posterior computation and i-vector extractor training.
+Kaldi is used to extract MFCCs and to train UBM.
 
 #### Steps to run example script with VoxCeleb data:
 - Move **kaldi/egs/voxceleb/v1/extract_feats_and_train_ubm.sh** to the corresponding folder in your Kaldi installation
