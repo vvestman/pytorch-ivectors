@@ -118,7 +118,7 @@ class IVectorExtractor():
             iter_start_time = time.time()
 
             print('Initializing statistics loader...')
-            accumulate_2nd_stats = settings.update_covariances and iteration == 1  
+            accumulate_2nd_stats = settings.update_covariances and iteration == 1  # 2nd order stats need to be accumulated only once
             stat_loader = self._get_stat_loader(rxspecifiers, feature_loader, accumulate_2nd_stats, settings.batch_size_in_utts, settings.dataloader_workers)        
             
             print('Iterating over batches of utterances...')
@@ -126,7 +126,7 @@ class IVectorExtractor():
                 
                 if accumulate_2nd_stats:
                     n_all, f_all, s_batch_sum = batch
-                    S += s_batch_sum.to(self.t_matrix.device)  # 2nd order stats need to be accumulated only once
+                    S += s_batch_sum.to(self.t_matrix.device)  
                 else:
                     n_all, f_all = batch
                               
@@ -167,7 +167,6 @@ class IVectorExtractor():
             R.zero_()
             h.zero_()
             H.zero_()
-            #G.zero_()
 
             if settings.save_every_iteration:
                 self.save_npz('{}.{}'.format(ensure_npz(output_filename, inverse=True), iteration + resume))
@@ -181,7 +180,7 @@ class IVectorExtractor():
     def _update_projections(self, Y, R, component_batches):
         print('Updating projections...')
         for bstart, bend in component_batches:
-            self.t_matrix[bstart:bend, :, :] = torch.cholesky_solve(Y[bstart:bend, :, :].transpose(1, 2), torch.cholesky(R[bstart:bend, :, :], upper=True))
+            self.t_matrix[bstart:bend, :, :] = torch.cholesky_solve(Y[bstart:bend, :, :].transpose(1, 2), torch.cholesky(R[bstart:bend, :, :], upper=True), upper=True)
 
     def _update_covariances(self, Y, R, z, S, component_batches):
         print('Updating covariances...')
@@ -198,7 +197,7 @@ class IVectorExtractor():
         self.inv_covariances = torch.inverse(self.inv_covariances)
 
     def _apply_floor_(self, A, B, component_batches):
-        B = self._apply_floor_scalar(B, self._max_abs_eig(B) * 1e-4)[0]  # To prevent Cholesky from failing
+        #B = self._apply_floor_scalar(B, self._max_abs_eig(B) * 1e-4)[0]  # To prevent Cholesky from failing
         L = torch.cholesky(B)
         L_inv = torch.inverse(L)
         num_floored = 0
@@ -265,7 +264,7 @@ class IVectorExtractor():
         t_matrix = torch.randn(ubm.covariances.size()[0], settings.ivec_dim, ubm.covariances.size()[1])
         means = ubm.means.cpu().clone()
         inv_covariances = ubm._inv_covariances.clone()
-        if settings.type == 'kaldi':
+        if settings.type == 'augmented':
             prior_offset = torch.tensor([float(settings.initial_prior_offset)])   
             t_matrix[:, 0, :] = means / prior_offset
         else:
