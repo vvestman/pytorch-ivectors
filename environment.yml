@@ -1,7 +1,7 @@
 name: ivectors
 channels:
-  - pykaldi
   - pytorch
+  - pykaldi
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
@@ -21,6 +21,7 @@ dependencies:
   - libpng=1.6.37=hbc83047_0
   - libstdcxx-ng=9.1.0=hdf63c60_0
   - libtiff=4.0.10=h2733197_2
+  - llvmlite=0.29.0=py37hd408876_0
   - mkl=2019.4=243
   - ncurses=6.1=he6710b0_1
   - ninja=1.9.0=py37hfd86e86_0

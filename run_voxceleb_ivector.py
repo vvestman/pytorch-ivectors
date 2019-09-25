@@ -10,6 +10,7 @@ import asvtorch.kaldidata.utils
 from asvtorch.misc.misc import ensure_exists
 import asvtorch.ivector.posteriors
 import asvtorch.ivector
+import asvtorch.ivector.ivector_extractor
 import asvtorch.ivector.settings
 import asvtorch.evaluation.trials
 import asvtorch.evaluation.eval_metrics
@@ -85,22 +86,24 @@ test_feat_rxspecifiers, test_vad_rxspecifiers, test_utt_ids, test_spk_ids = asvt
 test_rxspecifiers = (test_feat_rxspecifiers, test_vad_rxspecifiers)
 
 
-# Frame posterior extraction
-if recipe_settings.start_stage <= 1 <= recipe_settings.end_stage:
-    asvtorch.ivector.posteriors.batch_extract_posteriors(rxspecifiers, utt_ids, feature_loader, ubm, IVEC_TRAINING_POSTERIOR_FILE, posterior_extraction_settings)
-    asvtorch.ivector.posteriors.batch_extract_posteriors(plda_rxspecifiers, plda_utt_ids, feature_loader, ubm, BACKEND_TRAINING_POSTERIOR_FILE, posterior_extraction_settings)
-    asvtorch.ivector.posteriors.batch_extract_posteriors(test_rxspecifiers, test_utt_ids, feature_loader, ubm, TESTING_POSTERIOR_FILE, posterior_extraction_settings)
-
-
-# Preparing data with posteriors
-posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(IVEC_TRAINING_POSTERIOR_FILE)
-rxspecifiers = (*rxspecifiers, posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
-plda_posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(BACKEND_TRAINING_POSTERIOR_FILE)
-plda_rxspecifiers = (*plda_rxspecifiers, plda_posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
-test_posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(TESTING_POSTERIOR_FILE)
-test_rxspecifiers = (*test_rxspecifiers, test_posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
-
 while parameter_changer.next(): 
+
+    # Frame posterior extraction
+    if recipe_settings.start_stage <= 1 <= recipe_settings.end_stage:
+        asvtorch.ivector.posteriors.batch_extract_posteriors(rxspecifiers, utt_ids, feature_loader, ubm, IVEC_TRAINING_POSTERIOR_FILE, posterior_extraction_settings)
+        asvtorch.ivector.posteriors.batch_extract_posteriors(plda_rxspecifiers, plda_utt_ids, feature_loader, ubm, BACKEND_TRAINING_POSTERIOR_FILE, posterior_extraction_settings)
+        asvtorch.ivector.posteriors.batch_extract_posteriors(test_rxspecifiers, test_utt_ids, feature_loader, ubm, TESTING_POSTERIOR_FILE, posterior_extraction_settings)
+
+
+    # Preparing data with posteriors
+    posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(IVEC_TRAINING_POSTERIOR_FILE)
+    rxspecifiers = (*rxspecifiers, posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
+    plda_posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(BACKEND_TRAINING_POSTERIOR_FILE)
+    plda_rxspecifiers = (*plda_rxspecifiers, plda_posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
+    test_posterior_rxspecifiers = asvtorch.kaldidata.utils.load_posterior_specifiers(TESTING_POSTERIOR_FILE)
+    test_rxspecifiers = (*test_rxspecifiers, test_posterior_rxspecifiers)  # Tuple of three elements: (feats, vad, posteriors)
+
+
 
     if recipe_settings.start_stage <= 2 <= recipe_settings.end_stage:
   

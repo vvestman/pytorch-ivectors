@@ -1,6 +1,5 @@
 import time
 
-from numba import jit
 import numpy as np
 import torch
 from torch.utils import data
@@ -26,8 +25,6 @@ class _StatDataset(data.Dataset):
     def __len__(self):
         return len(self.feat_rxspecifiers)
 
-    # Numba makes this ~10x faster (maybe!):
-    @jit
     def accumulate_stats(self, feats, counts, posteriors, indices):
         """Computes 0th and 1st order statistics from the selected posteriors.
         

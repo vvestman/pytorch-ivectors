@@ -181,7 +181,7 @@ class IVectorExtractor():
     def _update_projections(self, Y, R, component_batches):
         print('Updating projections...')
         for bstart, bend in component_batches:
-            self.t_matrix[bstart:bend, :, :] = torch.potrs(Y[bstart:bend, :, :].transpose(1, 2), torch.cholesky(R[bstart:bend, :, :], upper=True))
+            self.t_matrix[bstart:bend, :, :] = torch.cholesky_solve(Y[bstart:bend, :, :].transpose(1, 2), torch.cholesky(R[bstart:bend, :, :], upper=True))
 
     def _update_covariances(self, Y, R, z, S, component_batches):
         print('Updating covariances...')
@@ -198,7 +198,7 @@ class IVectorExtractor():
         self.inv_covariances = torch.inverse(self.inv_covariances)
 
     def _apply_floor_(self, A, B, component_batches):
-        # self._apply_floor_scalar_(B, self._max_abs_eig(B) * 1e-4)  # To prevent Cholesky from failing
+        B = self._apply_floor_scalar(B, self._max_abs_eig(B) * 1e-4)[0]  # To prevent Cholesky from failing
         L = torch.cholesky(B)
         L_inv = torch.inverse(L)
         num_floored = 0
@@ -225,7 +225,6 @@ class IVectorExtractor():
         l = torch.clamp(l, min=b)
         A = torch.matmul(U, l.unsqueeze(1) * U.t())
         return A, num_floored
-        #print('Floored {} eigenvalues of the flooring matrix...'.format(num_floored))
 
     def _minimum_divergence_whitening(self, h, H, component_batches):
         print('Minimum divergence re-estimation...')

@@ -14,8 +14,9 @@
 
 # RUN 0:
 # Compute and save frame posteriors to disk
-recipe.start_stage = 0
-recipe.end_stage = 1
+# This can be commented out after it has been done once.
+#recipe.start_stage = 0
+#recipe.end_stage = 1
 
 # RUN 1:
 # Try two different variations of augmented model training (with and without residualcovariance updates):
@@ -26,7 +27,7 @@ ivector.minimum_divergence = [True]
 ivector.update_means = [True]
 #Increase the number of iterations to improve performance:
 ivector.n_iterations = 5
-ivector.dataloader_workers = 25
+ivector.dataloader_workers = 44
 ivector.ivec_dim = 400
 
 # RUN 2:
@@ -38,5 +39,5 @@ ivector.minimum_divergence = [True, False]
 ivector.update_means = [False]
 #Increase the number of iterations to improve performance:
 ivector.n_iterations = 5
-ivector.dataloader_workers = 25
+ivector.dataloader_workers = 44
 ivector.ivec_dim = 400
