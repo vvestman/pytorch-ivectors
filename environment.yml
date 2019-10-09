@@ -52,5 +52,4 @@ dependencies:
   - pip:
     - pykaldi==0.1.2
     - torch==1.2.0
-prefix: /media/hdd2/vvestman/anaconda3/envs/ivectors
 
