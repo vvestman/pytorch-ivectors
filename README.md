@@ -7,7 +7,7 @@ Kaldi is required for MFCC extraction and UBM training.
   - If you are using newer version of VoxCeleb1 (1.1), you might have to modify **kaldi/egs/voxceleb/v1/local/make_voxceleb1.pl** as the data organization is different than in the original VoxCeleb release.
 - run **extract_feats_and_train_ubm.sh**
 - update **DATA_FOLDER** in **run_voxceleb_ivector.py**
-- install and activate suitable conda environment
+- install and activate compatible conda environment
   - **environment.yml** has all the needed packages
   - Main requirements: Python (>3.6), PyTorch(>1.1), NumPy, SciPy, PyKaldi
 - run **run_voxceleb_ivector.py**
